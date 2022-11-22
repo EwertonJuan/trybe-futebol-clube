@@ -3,5 +3,4 @@ WORKDIR /app-backend
 COPY . .
 EXPOSE 3001
 RUN npm install
-ENTRYPOINT ["npm", "install"]
-CMD ["start"]
+CMD ["npm", "start"]
