@@ -21,16 +21,16 @@ describe('Testing route /login', () => {
 
   before(async () => {
     sinon
-      .stub(UsersModel, "create")
+      .stub(UsersModel, "findOne")
       .resolves({
         ...login
       } as UsersModel);
     sinon
-      .stub(JwtValidation, "getToken")
+      .stub(JwtValidation, "createToken")
   });
 
   after(()=>{
-    (UsersModel.create as sinon.SinonStub).restore();
+    (UsersModel.findOne as sinon.SinonStub).restore();
   })
 
   it('is possible to login correctly', async () => {
