@@ -9,7 +9,7 @@ export default class UsersService {
     if (!userExists) {
       throw new Error();
     }
-    const token = JwtValidation.createToken(userExists);
+    const token = await JwtValidation.createToken(userExists);
     return token;
   }
 }

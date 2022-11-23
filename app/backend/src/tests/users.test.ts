@@ -27,6 +27,7 @@ describe('Testing route /login', () => {
       } as UsersModel);
     sinon
       .stub(JwtValidation, "createToken")
+      .resolves(token)
   });
 
   after(()=>{
@@ -40,6 +41,6 @@ describe('Testing route /login', () => {
        .send({ email: "luisffreitas@email.com", password: "geladeiravelha" })
 
     expect(chaiHttpResponse.status).to.be.equal(200);
-    expect(chaiHttpResponse.body.token).to.be.equal(token)
+    expect(chaiHttpResponse.body).to.be.equal(token)
   });
 });
