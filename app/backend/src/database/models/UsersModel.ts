@@ -39,3 +39,5 @@ UsersModel.init({
   freezeTableName: true,
   timestamps: false,
 });
+
+export default UsersModel;
