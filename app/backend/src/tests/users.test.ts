@@ -34,11 +34,29 @@ describe('Testing route /login', () => {
     chaiHttpResponse = await chai
        .request(app)
        .post('/login')
-       .send(login)
-
-    console.log(chaiHttpResponse.body);
+       .send(login);
     
     expect(chaiHttpResponse.status).to.be.equal(200);
-    expect(chaiHttpResponse.body.token).to.be.equal(token)
+    expect(chaiHttpResponse.body.token).to.be.equal(token);
+  });
+
+  it('is not possible to login without an email', async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .post('/login')
+      .send({ email: '', password: '123456' });
+
+    expect(chaiHttpResponse.status).to.be.equal(400);
+    expect(chaiHttpResponse.body.message).to.be.equal('All fields must be filled');
+  });
+
+  it('is not possible to login without an password', async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .post('/login')
+      .send({ email: 'luisffreitas@email.com', password: '' });
+
+    expect(chaiHttpResponse.status).to.be.equal(400);
+    expect(chaiHttpResponse.body.message).to.be.equal('All fields must be filled');
   });
 });
