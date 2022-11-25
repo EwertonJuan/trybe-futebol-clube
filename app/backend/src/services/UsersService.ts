@@ -6,10 +6,10 @@ export default class UsersService {
   static async login(user: ILogin): Promise<string> {
     const userExists = await UsersModel
       .findOne({ where: { email: user.email, password: user.password } });
-    if (!userExists) {
-      throw new Error();
+    if (userExists) {
+      throw new Error('User already exists');
     }
-    const token = await JwtValidation.createToken(userExists);
+    const token = await JwtValidation.createToken(user);
     return token;
   }
 }
