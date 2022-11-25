@@ -21,11 +21,6 @@ describe('Testing route /login', () => {
 
   before(async () => {
     sinon
-      .stub(UsersModel, "findOne")
-      .resolves({
-        ...login
-      } as UsersModel);
-    sinon
       .stub(JwtValidation, "createToken")
       .resolves(token)
   });
@@ -35,12 +30,15 @@ describe('Testing route /login', () => {
   })
 
   it('is possible to login correctly', async () => {
+    sinon.stub(UsersModel, "findOne").resolves(null);
     chaiHttpResponse = await chai
        .request(app)
        .post('/login')
-       .send({ email: "luisffreitas@email.com", password: "geladeiravelha" })
+       .send(login)
 
+    console.log(chaiHttpResponse.body);
+    
     expect(chaiHttpResponse.status).to.be.equal(200);
-    expect(chaiHttpResponse.body).to.be.equal(token)
+    expect(chaiHttpResponse.body.token).to.be.equal(token)
   });
 });
