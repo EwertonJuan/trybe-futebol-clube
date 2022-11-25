@@ -8,7 +8,7 @@ import UsersModel from '../database/models/UsersModel';
 import JwtValidation from '../utils/JwtValidation';
 
 import { Response } from 'superagent';
-import { login, token } from './mocks/users.mock';
+import { login, user, token } from './mocks/users.mock';
 
 chai.use(chaiHttp);
 
@@ -20,17 +20,17 @@ describe('Testing route /login', () => {
   let chaiHttpResponse: Response;
 
   before(async () => {
-    sinon
-      .stub(JwtValidation, "createToken")
-      .resolves(token)
+    sinon.stub(UsersModel, "findOne").resolves(user as UsersModel);
   });
-
+  
   after(()=>{
     (UsersModel.findOne as sinon.SinonStub).restore();
   })
-
+  
   it('is possible to login correctly', async () => {
+    sinon.restore();
     sinon.stub(UsersModel, "findOne").resolves(null);
+    sinon.stub(JwtValidation, "createToken").resolves(token);
     chaiHttpResponse = await chai
        .request(app)
        .post('/login')
@@ -58,5 +58,25 @@ describe('Testing route /login', () => {
 
     expect(chaiHttpResponse.status).to.be.equal(400);
     expect(chaiHttpResponse.body.message).to.be.equal('All fields must be filled');
+  });
+
+  it('is not possible to login with an invalid email',async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .post('/login')
+      .send({ email: login.email, password: 'invalidpassword' });
+
+    expect(chaiHttpResponse.status).to.be.equal(401);
+    expect(chaiHttpResponse.body.message).to.be.equal('Incorrect email or password');
+  });
+
+  it('is not possible to login with an invalid email',async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .post('/login')
+      .send({ email: 'invalid@email.com', password: login.password });
+
+    expect(chaiHttpResponse.status).to.be.equal(401);
+    expect(chaiHttpResponse.body.message).to.be.equal('Incorrect email or password');
   });
 });
