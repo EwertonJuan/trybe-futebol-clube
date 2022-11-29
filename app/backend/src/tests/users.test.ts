@@ -8,7 +8,7 @@ import UsersModel from '../database/models/UsersModel';
 import JwtValidation from '../utils/JwtValidation';
 
 import { Response } from 'superagent';
-import { login, user, token } from './mocks/users.mock';
+import { login, user, token, jwtPayload } from './mocks/users.mock';
 
 chai.use(chaiHttp);
 
@@ -26,6 +26,7 @@ describe('Testing route /login', () => {
   
   after(()=>{
     (UsersModel.findOne as sinon.SinonStub).restore();
+    (JwtValidation.createToken as sinon.SinonStub).restore();
   })
   
   it('is possible to login correctly', async () => {
@@ -78,3 +79,34 @@ describe('Testing route /login', () => {
     expect(chaiHttpResponse.body.message).to.be.equal('Incorrect email or password');
   });
 });
+
+describe('Testing route /login/validate', async () => {
+  let chaiHttpResponse: Response;
+
+  
+  before(async () => {
+    sinon.stub(UsersModel, "findOne").resolves(user as UsersModel);
+    sinon.stub(JwtValidation, "createToken").resolves(token);
+    sinon.stub(JwtValidation, "validateToken").resolves(jwtPayload);
+  });
+  
+  after(() => {
+    (UsersModel.findOne as sinon.SinonStub).restore();
+    (JwtValidation.createToken as sinon.SinonStub).restore();
+  });
+
+  it('returns role if user is authorized', async () => {
+    const { body: { token } } = await chai
+      .request(app)
+      .post('/login')
+      .send(login);
+
+    chaiHttpResponse = await chai
+      .request(app)
+      .get('/login/validate')
+      .send({ headers: { authorization: token } });
+
+    expect(chaiHttpResponse.status).to.be.equal(200);
+    expect(chaiHttpResponse.body.role).to.be.equal('admin');
+  });
+})
