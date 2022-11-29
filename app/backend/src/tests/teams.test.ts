@@ -21,10 +21,12 @@ describe('Testing route /teams', () => {
 
   before(async () => {
     sinon.stub(TeamsModel, "findAll").resolves(teams as TeamsModel[]);
+    sinon.stub(TeamsModel, "findOne").resolves(teams[0] as TeamsModel);
   });
   
   after(()=>{
     (TeamsModel.findAll as sinon.SinonStub).restore();
+    (TeamsModel.findOne as sinon.SinonStub).restore();
   });
 
   it('returns all teams with GET', async () => {
@@ -34,5 +36,14 @@ describe('Testing route /teams', () => {
     
     expect(chaiHttpResponse.status).to.be.equal(200);
     expect(chaiHttpResponse.body).to.be.deep.equal(teams);
-  })
+  });
+
+  it('returns one team by id', async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .get('/teams/1');
+    
+    expect(chaiHttpResponse.status).to.be.equal(200);
+    expect(chaiHttpResponse.body).to.be.equal(teams[0]);
+  });
 })

@@ -1,7 +1,7 @@
 const teams = [
   {
     "id": 1,
-    "teamName": "Avaí/Kindermann"
+    "teamName": "São Paulo"
   },
   {
     "id": 2,
