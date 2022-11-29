@@ -21,6 +21,7 @@ describe('Testing route /login', () => {
 
   before(async () => {
     sinon.stub(UsersModel, "findOne").resolves(user as UsersModel);
+    sinon.stub(JwtValidation, "createToken").resolves(token);
   });
   
   after(()=>{
@@ -28,9 +29,6 @@ describe('Testing route /login', () => {
   })
   
   it('is possible to login correctly', async () => {
-    sinon.restore();
-    sinon.stub(UsersModel, "findOne").resolves(null);
-    sinon.stub(JwtValidation, "createToken").resolves(token);
     chaiHttpResponse = await chai
        .request(app)
        .post('/login')
