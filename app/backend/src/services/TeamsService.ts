@@ -2,7 +2,10 @@ import TeamsModel from '../database/models/TeamsModel';
 
 export default class TeamsService {
   static async getAll() {
-    const teams = await TeamsModel.findAll();
-    return teams;
+    return TeamsModel.findAll();
+  }
+
+  static async getById(id: number) {
+    return TeamsModel.findOne({ where: { id } });
   }
 }

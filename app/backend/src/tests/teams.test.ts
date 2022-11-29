@@ -44,6 +44,6 @@ describe('Testing route /teams', () => {
       .get('/teams/1');
     
     expect(chaiHttpResponse.status).to.be.equal(200);
-    expect(chaiHttpResponse.body).to.be.equal(teams[0]);
+    expect(chaiHttpResponse.body).to.be.deep.equal(teams[0]);
   });
 })
