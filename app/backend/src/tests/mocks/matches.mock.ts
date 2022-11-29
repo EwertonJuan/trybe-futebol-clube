@@ -26,7 +26,21 @@ const matches = [
     "teamAway": {
       "teamName": "Santos"
     }
-  }
+  },
+  {
+    "id": 3,
+    "homeTeam": 2,
+    "homeTeamGoals": 1,
+    "awayTeam": 14,
+    "awayTeamGoals": 1,
+    "inProgress": true,
+    "teamHome": {
+      "teamName": "Bahia"
+    },
+    "teamAway": {
+      "teamName": "Santos"
+    }
+  },
 ];
 
 export { matches }

@@ -34,4 +34,13 @@ describe('Testing route /matches', () => {
     expect(chaiHttpResponse.status).to.be.equal(200);
     expect(chaiHttpResponse.body).to.be.deep.equal(matches);
   });
+
+  it('returns filtered matches', async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .get('/matches?inProgress=true');
+
+    expect(chaiHttpResponse.status).to.be.equal(200);
+    expect(chaiHttpResponse.body).to.be.deep.equal(matches[2]);
+  });
 });

@@ -4,7 +4,6 @@ import MatchesService from '../services/MatchesService';
 export default class MatchesController {
   static async getAll(_req: Request, res: Response) {
     const matches = await MatchesService.getAll();
-    console.log(matches[0]);
     res.status(200).json(matches);
   }
 }
