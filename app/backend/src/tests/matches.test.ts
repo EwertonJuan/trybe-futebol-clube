@@ -36,6 +36,9 @@ describe('Testing route /matches', () => {
   });
 
   it('returns filtered matches', async () => {
+    (MatchesModel.findAll as sinon.SinonStub).restore();
+    sinon.stub(MatchesModel, "findAll").resolves(matches[2] as unknown as MatchesModel[]);
+    
     chaiHttpResponse = await chai
       .request(app)
       .get('/matches?inProgress=true');
