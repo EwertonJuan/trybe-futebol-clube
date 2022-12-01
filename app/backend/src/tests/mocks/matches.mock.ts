@@ -43,4 +43,12 @@ const matches = [
   },
 ];
 
-export { matches }
+const setMatch = {
+  "homeTeam": 1,
+  "awayTeam": 2,
+  "homeTeamGoals": 3,
+  "awayTeamGoals": 1,
+}
+
+
+export { matches, setMatch }
