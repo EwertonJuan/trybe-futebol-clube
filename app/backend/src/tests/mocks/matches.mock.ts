@@ -57,5 +57,11 @@ const invalidMatch = {
   "awayTeamGoals": 1,
 }
 
+const teamNotFound = {
+  "homeTeam": 1,
+  "awayTeam": 99,
+  "homeTeamGoals": 3,
+  "awayTeamGoals": 1,
+}
 
-export { matches, setMatch, invalidMatch }
+export { matches, setMatch, invalidMatch, teamNotFound }

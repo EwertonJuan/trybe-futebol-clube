@@ -7,7 +7,7 @@ import App from '../app';
 import MatchesModel from '../database/models/MatchesModel';
 
 import { Response } from 'superagent';
-import { invalidMatch, matches, setMatch } from './mocks/matches.mock';
+import { invalidMatch, matches, setMatch, teamNotFound } from './mocks/matches.mock';
 
 chai.use(chaiHttp);
 
@@ -81,5 +81,18 @@ describe('Testing route /matches', () => {
       
     expect(chaiHttpResponse.status).to.be.equal(422);
     expect(chaiHttpResponse.body.message).to.be.equal("It is not possible to create a match with two equal teams");
+  });
+
+  it('returns error if team doesn\'t exist', async () => {
+    (MatchesModel.findAll as sinon.SinonStub).restore();
+    sinon.stub(MatchesModel, "findAll").resolves(matches[2] as unknown as MatchesModel[]);
+
+    chaiHttpResponse = await chai
+      .request(app)
+      .post('/matches')
+      .send(teamNotFound);
+      
+    expect(chaiHttpResponse.status).to.be.equal(404);
+    expect(chaiHttpResponse.body.message).to.be.equal("There is no team with such id!");
   });
 });
