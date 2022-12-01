@@ -8,10 +8,7 @@ export default class ErrorMiddleware {
     res: Response,
     _next: NextFunction,
   ) {
-    if (error instanceof HttpException) {
-      console.log('error called');
-      return res.status(500).send(error.message);
-    }
-    return res.status(500).send('Erro não definido');
+    const { status, message } = error as HttpException;
+    return res.status(status || 500).json({ message });
   }
 }

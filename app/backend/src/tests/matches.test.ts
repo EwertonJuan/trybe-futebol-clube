@@ -8,6 +8,9 @@ import MatchesModel from '../database/models/MatchesModel';
 
 import { Response } from 'superagent';
 import { invalidMatch, matches, setMatch, teamNotFound } from './mocks/matches.mock';
+import MatchesService from '../services/MatchesService';
+import { teams } from './mocks/teams.mock';
+import TeamsModel from '../database/models/TeamsModel';
 
 chai.use(chaiHttp);
 
@@ -50,6 +53,7 @@ describe('Testing route /matches', () => {
   });
   
   it('is possible to create a new match', async () => {
+    sinon.stub(TeamsModel, "findAll").resolves([teams[0], teams[1]] as TeamsModel[]);
     sinon.stub(MatchesModel, "create")
       .resolves({ id: 4, inProgress: true, ...setMatch } as MatchesModel)
     
@@ -85,7 +89,7 @@ describe('Testing route /matches', () => {
 
   it('returns error if team doesn\'t exist', async () => {
     (MatchesModel.findAll as sinon.SinonStub).restore();
-    sinon.stub(MatchesModel, "findAll").resolves(matches[2] as unknown as MatchesModel[]);
+    sinon.stub(TeamsModel, "findAll").resolves([teams[0]] as TeamsModel[]);
 
     chaiHttpResponse = await chai
       .request(app)

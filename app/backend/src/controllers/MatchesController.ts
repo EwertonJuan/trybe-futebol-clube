@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import MatchesService from '../services/MatchesService';
 
 export default class MatchesController {
@@ -15,8 +15,8 @@ export default class MatchesController {
     res.status(200).json(matches);
   }
 
-  static async createMatch(req: Request, res: Response) {
-    const match = await MatchesService.createMatch(req.body);
+  static async createMatch(req: Request, res: Response, next: NextFunction) {
+    const match = await MatchesService.createMatch(req.body, next);
     res.status(201).json(match);
   }
 

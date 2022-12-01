@@ -1,6 +1,9 @@
+import { Op } from 'sequelize';
+import { NextFunction } from 'express';
 import TeamsModel from '../database/models/TeamsModel';
 import MatchesModel from '../database/models/MatchesModel';
 import IMatch from '../interfaces/IMatch';
+// import HttpException from '../utils/HttpException';
 
 export default class MatchesService {
   static async getAll() {
@@ -19,7 +22,17 @@ export default class MatchesService {
       ] });
   }
 
-  static async createMatch(match: IMatch) {
+  static async findTeams(homeTeam: number, awayTeam: number) {
+    return TeamsModel
+      .findAll({ where: { [Op.or]: [{ id: homeTeam }, { id: awayTeam }] } });
+  }
+
+  static async createMatch(match: IMatch, next: NextFunction) {
+    const { homeTeam, awayTeam } = match;
+    const bothTeamsExists = (await this.findTeams(homeTeam, awayTeam)).length === 2;
+    console.log(bothTeamsExists);
+    if (!bothTeamsExists) next({ status: 404, message: 'There is no team with such id!' });
+
     const newMatch = await MatchesModel.create({ ...match, inProgress: true });
     return newMatch;
   }
