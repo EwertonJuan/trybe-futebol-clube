@@ -7,7 +7,7 @@ import App from '../app';
 import MatchesModel from '../database/models/MatchesModel';
 
 import { Response } from 'superagent';
-import { matches, setMatch } from './mocks/matches.mock';
+import { invalidMatch, matches, setMatch } from './mocks/matches.mock';
 
 chai.use(chaiHttp);
 
@@ -67,9 +67,19 @@ describe('Testing route /matches', () => {
     
     chaiHttpResponse = await chai
       .request(app)
-      .patch('/matches/4/finish')
+      .patch('/matches/4/finish');
       
     expect(chaiHttpResponse.status).to.be.equal(200);
     expect(chaiHttpResponse.body.message).to.be.deep.equal("Finished");
+  });
+
+  it('is not possible to create a match with equal teams', async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .post('/matches')
+      .send(invalidMatch);
+      
+    expect(chaiHttpResponse.status).to.be.equal(422);
+    expect(chaiHttpResponse.body.message).to.be.equal("It is not possible to create a match with two equal teams");
   });
 });
