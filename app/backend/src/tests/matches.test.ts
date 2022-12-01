@@ -24,6 +24,8 @@ describe('Testing route /matches', () => {
   
   after(() => {
     (MatchesModel.findAll as sinon.SinonStub).restore();
+    (MatchesModel.create as sinon.SinonStub).restore();
+    (MatchesModel.update as sinon.SinonStub).restore();
   });
   
   it('returns all matches with GET', async () => {
@@ -58,5 +60,16 @@ describe('Testing route /matches', () => {
 
     expect(chaiHttpResponse.status).to.be.equal(201);
     expect(chaiHttpResponse.body).to.be.deep.equal({ id: 4, inProgress: true, ...setMatch });
+  });
+
+  it('is possible to update a match', async () => {
+    sinon.stub(MatchesModel, "update").resolves()
+    
+    chaiHttpResponse = await chai
+      .request(app)
+      .put('/matches/4/finish')
+      
+    expect(chaiHttpResponse.status).to.be.equal(200);
+    expect(chaiHttpResponse.body.message).to.be.deep.equal("Finished");
   });
 });
