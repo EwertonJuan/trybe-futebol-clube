@@ -67,7 +67,7 @@ describe('Testing route /matches', () => {
     
     chaiHttpResponse = await chai
       .request(app)
-      .put('/matches/4/finish')
+      .patch('/matches/4/finish')
       
     expect(chaiHttpResponse.status).to.be.equal(200);
     expect(chaiHttpResponse.body.message).to.be.deep.equal("Finished");

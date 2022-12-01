@@ -23,4 +23,9 @@ export default class MatchesService {
     const newMatch = await MatchesModel.create({ ...match, inProgress: true });
     return newMatch;
   }
+
+  static async finishMatch(id: number) {
+    await MatchesModel.update({ inProgress: false }, { where: { id } });
+    return { message: 'Finished' };
+  }
 }
