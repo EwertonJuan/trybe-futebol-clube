@@ -1,7 +1,7 @@
-import { sign, verify } from 'jsonwebtoken';
+import { decode, sign, verify } from 'jsonwebtoken';
 import ILogin from '../interfaces/ILogin';
 import 'dotenv/config';
-import HttpException from './HttpException';
+// import HttpException from './HttpException';
 
 export default class JwtValidation {
   static createToken(data: ILogin): string {
@@ -15,7 +15,13 @@ export default class JwtValidation {
       const data = verify(token, jwtSecret);
       return data;
     } catch (error) {
-      throw new HttpException(401, 'Unauthorized');
+      return 'Unauthorized';
     }
+  }
+
+  static decodeToken(token: string) {
+    const data = decode(token);
+    console.log(data);
+    return data;
   }
 }

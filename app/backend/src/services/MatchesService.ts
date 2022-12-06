@@ -30,7 +30,6 @@ export default class MatchesService {
   static async createMatch(match: IMatch, next: NextFunction) {
     const { homeTeam, awayTeam } = match;
     const bothTeamsExists = (await this.findTeams(homeTeam, awayTeam)).length === 2;
-    console.log(bothTeamsExists);
     if (!bothTeamsExists) next({ status: 404, message: 'There is no team with such id!' });
 
     const newMatch = await MatchesModel.create({ ...match, inProgress: true });
