@@ -19,12 +19,12 @@ export default class LeaderboardService {
     });
   }
 
-  static async getLeaderboard() {
+  static async getLeaderboard(homeOrAway: string) {
     const teamsIds = await TeamsModel.findAll({ attributes: { exclude: ['teamName'] } });
     const allTeams: ILeaderboardTeam[] = [];
     const promises = teamsIds.map(async ({ id }) => {
       const leaderboardTeam = new LeaderboardTeam(id);
-      const team = await leaderboardTeam.getLeaderboardTeam('home');
+      const team = await leaderboardTeam.getLeaderboardTeam(homeOrAway);
       allTeams.push(team);
     });
     await Promise.all(promises);

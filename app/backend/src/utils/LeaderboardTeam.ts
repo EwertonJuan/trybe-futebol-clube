@@ -170,8 +170,12 @@ export default class LeaderboardTeam {
     if (homeOrAway === 'home') {
       await this.getHomeResults();
       await this.getHomeGoals();
-    }
-    if (homeOrAway === 'away') {
+    } else if (homeOrAway === 'away') {
+      await this.getAwayResults();
+      await this.getAwayGoals();
+    } else {
+      await this.getHomeResults();
+      await this.getHomeGoals();
       await this.getAwayResults();
       await this.getAwayGoals();
     }
