@@ -122,7 +122,7 @@ export default class LeaderboardTeam {
     this._totalDraws += draws;
   }
 
-  public async getGoals(): Promise<void> {
+  public async getHomeGoals(): Promise<void> {
     const homeMatches = await MatchesService.getSingleTeamHomeMatches(this._id);
     let homeGoalsFavor = 0;
     let homeGoalsOwn = 0;
@@ -131,6 +131,11 @@ export default class LeaderboardTeam {
       homeGoalsOwn += awayTeamGoals;
     });
 
+    this._goalsFavor = homeGoalsFavor;
+    this._goalsOwn = homeGoalsOwn;
+  }
+
+  public async getAwayGoals() {
     const awayMatches = await MatchesService.getSingleTeamAwayMatches(this._id);
     let awayGoalsFavor = 0;
     let awayGoalsOwn = 0;
@@ -139,8 +144,8 @@ export default class LeaderboardTeam {
       awayGoalsOwn += homeTeamGoals;
     });
 
-    this._goalsFavor = awayGoalsFavor + homeGoalsFavor;
-    this._goalsOwn = awayGoalsOwn + homeGoalsOwn;
+    this._goalsFavor = awayGoalsFavor;
+    this._goalsOwn = awayGoalsOwn;
   }
 
   public getGames(): void {
@@ -160,11 +165,16 @@ export default class LeaderboardTeam {
     this._efficiency = String(efficiency.toFixed(2));
   }
 
-  public async generateData(): Promise<void> {
+  public async generateData(homeOrAway: string): Promise<void> {
     await this.getName();
-    await this.getHomeResults();
-    await this.getAwayResults();
-    await this.getGoals();
+    if (homeOrAway === 'home') {
+      await this.getHomeResults();
+      await this.getHomeGoals();
+    }
+    if (homeOrAway === 'away') {
+      await this.getAwayResults();
+      await this.getAwayGoals();
+    }
     this.getGames();
     this.getGoalsBalance();
     this.getPoints();
@@ -172,8 +182,8 @@ export default class LeaderboardTeam {
     this.getEfficiency();
   }
 
-  public async getLeaderboardTeam(): Promise<ILeaderboardTeam> {
-    await this.generateData();
+  public async getLeaderboardTeam(homeOrAway: string): Promise<ILeaderboardTeam> {
+    await this.generateData(homeOrAway);
 
     return {
       name: this.name,
