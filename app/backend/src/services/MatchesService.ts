@@ -40,4 +40,9 @@ export default class MatchesService {
     await MatchesModel.update({ inProgress: false }, { where: { id } });
     return { message: 'Finished' };
   }
+
+  static async updateMatch(id: number, homeTeamGoals: number, awayTeamGoals: number) {
+    await MatchesModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+    return { message: 'Updated' };
+  }
 }

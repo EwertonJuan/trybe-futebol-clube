@@ -100,7 +100,7 @@ describe('Testing route /matches', () => {
     expect(chaiHttpResponse.body.message).to.be.equal("There is no team with such id!");
   });
 
-  it('is possible to finish a match', async () => {
+  it('is possible to update a match', async () => {
     chaiHttpResponse = await chai
       .request(app)
       .patch('/matches/4')
