@@ -131,8 +131,8 @@ export default class LeaderboardTeam {
       homeGoalsOwn += awayTeamGoals;
     });
 
-    this._goalsFavor = homeGoalsFavor;
-    this._goalsOwn = homeGoalsOwn;
+    this._goalsFavor += homeGoalsFavor;
+    this._goalsOwn += homeGoalsOwn;
   }
 
   public async getAwayGoals() {
@@ -144,8 +144,8 @@ export default class LeaderboardTeam {
       awayGoalsOwn += homeTeamGoals;
     });
 
-    this._goalsFavor = awayGoalsFavor;
-    this._goalsOwn = awayGoalsOwn;
+    this._goalsFavor += awayGoalsFavor;
+    this._goalsOwn += awayGoalsOwn;
   }
 
   public getGames(): void {
