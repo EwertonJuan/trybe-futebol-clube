@@ -45,4 +45,12 @@ export default class MatchesService {
     await MatchesModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
     return { message: 'Updated' };
   }
+
+  static async getSingleTeamHomeMatches(id: number) {
+    return MatchesModel.findAll({ where: { [Op.and]: [{ inProgress: false }, { homeTeam: id }] } });
+  }
+
+  static async getSingleTeamAwayMatches(id: number) {
+    return MatchesModel.findAll({ where: { [Op.and]: [{ inProgress: false }, { awayTeam: id }] } });
+  }
 }
