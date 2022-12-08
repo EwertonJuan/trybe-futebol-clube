@@ -66,7 +66,7 @@ describe('Testing route /matches', () => {
     expect(chaiHttpResponse.body).to.be.deep.equal({ id: 4, inProgress: true, ...setMatch });
   });
 
-  it('is possible to update a match', async () => {
+  it('is possible to finish a match', async () => {
     sinon.stub(MatchesModel, "update").resolves()
     
     chaiHttpResponse = await chai
@@ -98,5 +98,14 @@ describe('Testing route /matches', () => {
       
     expect(chaiHttpResponse.status).to.be.equal(404);
     expect(chaiHttpResponse.body.message).to.be.equal("There is no team with such id!");
+  });
+
+  it('is possible to finish a match', async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .patch('/matches/4')
+      .send({ homeTeamGoals: 3, awayTeamGoals: 1 });
+      
+    expect(chaiHttpResponse.status).to.be.equal(200);
   });
 });
