@@ -4,6 +4,7 @@ import UsersService from '../services/UsersService';
 export default class UsersController {
   static async login(req: Request, res: Response) {
     const token = await UsersService.login(req.body);
+    if (token === 'Incorrect email or password') return res.status(401).json({ message: token });
     res.status(200).json({ token });
   }
 

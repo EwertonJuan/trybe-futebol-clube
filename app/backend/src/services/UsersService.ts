@@ -1,24 +1,28 @@
-// import { Op } from 'sequelize';
 import { JwtPayload } from 'jsonwebtoken';
+import { compareSync } from 'bcryptjs';
 import JwtValidation from '../utils/JwtValidation';
 import UsersModel from '../database/models/UsersModel';
 import ILogin from '../interfaces/ILogin';
 import IUser from '../interfaces/IUser';
-import HttpException from '../utils/HttpException';
 
 export default class UsersService {
   static validateLogin(login: ILogin, user: IUser) {
-    if (login.email !== user.email || login.password !== user.password) {
-      throw new HttpException(401, 'Incorrect email or password');
+    if (login.email !== user.email || !(compareSync(login.password, user.password))) {
+      return 'Incorrect email or password';
     }
+    return '';
   }
 
   static async login(user: ILogin): Promise<string> {
-    // const userExists = await UsersModel
-    //   .findOne({ where: { [Op.or]: [{ email: user.email }, { password: user.password }] } });
-    // if (userExists) {
-    //   this.validateLogin(user, userExists);
-    // }
+    const userExists = await UsersModel
+      .findOne({ where: { email: user.email } });
+
+    if (!userExists) {
+      return 'Incorrect email or password';
+    }
+    const invalid = this.validateLogin(user, userExists);
+    if (invalid) return invalid;
+
     const token = await JwtValidation.createToken(user);
     return token;
   }
