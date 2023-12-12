@@ -1,13 +1,39 @@
-# :construction: README customizado em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto no qual você pode customizar e reutilizar todas as vezes que for executar o trybe-publisher.
+# Trybe Futebol Clube
 
-Para deixá-lo com a sua cara, basta alterar o seguinte arquivo da sua máquina: ~/.student-repo-publisher/custom/_NEW_README.md
+Bem-vindo ao repositório do Trybe Futebol Clube! Este projeto é uma aplicação desenvolvida em TypeScript que fornece informações partidas e classificações de futebol.
+Este é um projeto full stack monorepo e o frontend foi construído por outro time.
 
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+## Recursos
+
+- **Backend**: Construído em TypeScript utilizando a arquitetura MSC (Model, Service, Controller) para formar a API que alimenta o frontend.
+
+- **Banco de dados MySQL**: Utiliza um banco de dados Sequelize para alimentar o serviço de backend
+
+- **Dockerizado**: Execute a aplicação em contêineres Docker para facilitar a implantação e o desenvolvimento.
+
+- **Cobertura de testes**: O backend é coberto por testes utilizando as bibliotecas sinon e chai.
+
+## Como Iniciar
+
+Siga estas etapas para executar o projeto em um contêiner Docker:
+
+1. Clone o repositório:
+
+   ```bash
+   git clone https://github.com/seu-usuario/trybe-futebol-clube.git
+   ```
+
+2. Navegue até o diretório do projeto:
+
+   ```bash
+   cd trybe-futebol-clube
+   ```
+
+3. Execute a aplicação:
+
+   ```bash
+   npm run compose:up
+   ```
+   Esse comando é responsável por executar o docker-compose e subir todos os contêiners da aplicação.
+
+Acesse a aplicação em http://localhost:3000.
